@@ -22,7 +22,7 @@
             <result type="json" name="{1}" />
         </action>
 
-        <action name="admin_*" class="adminAction" method="{1}">
+        <action name="admin2_*" class="adminAction" method="{1}">
             <result type="json" name="{1}"/>
         </action>
     </package>
