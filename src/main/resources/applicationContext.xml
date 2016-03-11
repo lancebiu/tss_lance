@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+       <!-- dao -->
+       <bean id="studentDao" class="cn.edu.nju.dao.impl.StudentDaoImpl">
+       </bean>
+       <bean id="teacherDao" class="cn.edu.nju.dao.impl.TeacherDaoImpl">
+       </bean>
+       <bean id="courseDao" class="cn.edu.nju.dao.impl.CourseDaoImpl">
+       </bean>
+       <bean id="courseScheduleDao" class="cn.edu.nju.dao.impl.CourseScheduleDaoImpl">
+       </bean>
+
+
+       <!-- studentService -->
+       <bean id="studentService" class="cn.edu.nju.service.impl.StudentServiceImpl">
+              <property name="dao" ref="studentDao"/>
+       </bean>
+       <bean id="teacherService" class="cn.edu.nju.service.impl.TeacherServiceImpl">
+              <property name="dao" ref="teacherDao"/>
+       </bean>
+       <bean id="courseService" class="cn.edu.nju.service.impl.CourseServiceImpl">
+              <property name="dao" ref="courseDao"/>
+       </bean>
+       <bean id="courseScheduleService" class="cn.edu.nju.service.impl.CourseScheduleServiceImpl">
+              <property name="dao" ref="courseScheduleDao" />
+       </bean>
+
+
+       <!-- action -->
+       <bean id="adminAction" class="cn.edu.nju.action.AdminAction">
+              <property name="studentService" ref="studentService"/>
+              <property name="teacherService" ref="teacherService"/>
+              <property name="courseService" ref="courseService"/>
+              <property name="scheduleService" ref="courseScheduleService" />
+       </bean>
+       <bean id="scheduleAction" class="cn.edu.nju.action.ScheduleAction">
+              <property name="scheduleService" ref="courseScheduleService" />
+              <property name="courseService" ref="courseService" />
+              <property name="teacherService" ref="teacherService" />
+       </bean>
+
+</beans>
