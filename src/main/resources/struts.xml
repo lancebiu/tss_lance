@@ -13,6 +13,8 @@
             <result name="teachers">/adminTeacher.jsp</result>
             <result name="courses">/adminCourse.jsp</result>
             <result name="schedules">/adminSchedule.jsp</result>
+            <result name="studentDetail">/adminStudentDetail.jsp</result>
+            <result name="teacherDetail">/adminTeacherDetail.jsp</result>
         </action>
 
     </package>

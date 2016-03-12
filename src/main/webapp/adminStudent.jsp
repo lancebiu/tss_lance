@@ -72,10 +72,10 @@
                     <tbody>
                     <s:iterator value="students">
                         <tr>
-                            <td data-column="学号"><s:property value="uid"/></td>
+                            <td data-column="学号" class="uid"><s:property value="uid"/></td>
                             <td data-column="公司"><s:property value="uname"/></td>
                             <td data-column="院系"><s:property value="department"/></td>
-                            <td class="operate" data-column="操作"><a href="#" class="fa fa-close">删除</a><a href="#"
+                            <td class="operate" data-column="操作"><a href="#" class="fa fa-close delete">删除</a><a href="admin_studentDetail?uid=<s:property value="uid"/>"
                                                                                                           class="fa fa-search">详情</a>
                             </td>
                         </tr>
@@ -110,5 +110,27 @@
 <script src="js/jquery-2.1.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/foundation/6.1.2/foundation.min.js"></script>
 <script src="js/app.js"></script>
+<script>
+    // delete student
+    $(".delete").click(function () {
+
+        var $item = $(this).parent().parent();
+        $.ajax({
+            url: "admin2_deleteStudent",
+            dataType: "json",
+            data: {
+                uid: $item.find(".uid").html()
+            },
+            success: function (data) {
+                $item.remove();
+            },
+            error: function() {
+                alert("error");
+            }
+
+        });
+        return false;
+    });
+</script>
 </body>
 </html>

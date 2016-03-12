@@ -26,7 +26,15 @@ public class AdminAction extends BaseAction {
     private List<CourseScheduleEntity> schedules;
     private List<CompleteCourseScheduleEntity> completeSchedules;
 
+    private StudentEntity studentEntity;
+    private TeacherEntity teacherEntity;
+
     private String term;
+    private String uid;
+    private String tid;
+    private String uname;
+    private String tname;
+    private String department;
 
     private int page;
     private boolean pageCommit = false;
@@ -133,6 +141,62 @@ public class AdminAction extends BaseAction {
         this.totalPage = totalPage;
     }
 
+    public StudentEntity getStudentEntity() {
+        return studentEntity;
+    }
+
+    public void setStudentEntity(StudentEntity studentEntity) {
+        this.studentEntity = studentEntity;
+    }
+
+    public TeacherEntity getTeacherEntity() {
+        return teacherEntity;
+    }
+
+    public void setTeacherEntity(TeacherEntity teacherEntity) {
+        this.teacherEntity = teacherEntity;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getTid() {
+        return tid;
+    }
+
+    public void setTid(String tid) {
+        this.tid = tid;
+    }
+
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname;
+    }
+
+    public String getTname() {
+        return tname;
+    }
+
+    public void setTname(String tname) {
+        this.tname = tname;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
     public String students() {
         if (!pageCommit)
             page = 1;
@@ -167,4 +231,39 @@ public class AdminAction extends BaseAction {
         return "schedules";
     }
 
+    public String deleteStudent() {
+        studentService.delete(uid);
+        return "deleteStudent";
+    }
+
+    public String deleteTeacher() {
+        teacherService.delete(tid);
+        return "deleteTeacher";
+    }
+
+    public String studentDetail() {
+        studentEntity = studentService.findById(uid);
+        return "studentDetail";
+    }
+
+    public String teacherDetail() {
+        teacherEntity = teacherService.findById(tid);
+        return "teacherDetail";
+    }
+
+    public String updateStudent() {
+        studentEntity = studentService.findById(uid);
+        studentEntity.setUname(uname);
+        studentEntity.setDepartment(department);
+        studentService.update(studentEntity);
+        return "updateStudent";
+    }
+
+    public String updateTeacher() {
+        teacherEntity = teacherService.findById(tid);
+        teacherEntity.setTname(tname);
+        teacherEntity.setDepartment(department);
+        teacherService.update(teacherEntity);
+        return "updateTeacher";
+    }
 }

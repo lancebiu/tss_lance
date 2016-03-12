@@ -1,3 +1,5 @@
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
@@ -24,12 +26,12 @@
                         class="right fa fa-angle-right"></span></a>
 
                 <ul class="menu vertical nested is-active">
-                    <li><a href="adminStudent.html">学生管理</a></li>
-                    <li class="current"><a href="adminTeacher.html">教师管理</a></li>
+                    <li><a href="admin_students">学生管理</a></li>
+                    <li class="current"><a href="admin_teachers">教师管理</a></li>
                 </ul>
             </li>
-            <li class="current"><a href="adminCourse.html"><i class="fa fa-book"></i><span>课程管理</span></a></li>
-            <li><a href="adminSchedule.html"><i class="fa fa-calendar"></i><span>教学计划</span></a></li>
+            <li><a href="admin_courses"><i class="fa fa-book"></i><span>课程管理</span></a></li>
+            <li><a href="admin_schedules"><i class="fa fa-calendar"></i><span>教学计划</span></a></li>
         </ul>
     </aside>
 
@@ -55,28 +57,28 @@
         <div class="content">
 
             <div class="info-title">
-                <h3>学生详情</h3>
+                <h3>教师详情</h3>
                 <a href="#" class="action">修改</a>
             </div>
             <hr>
             <ul class="pf-items">
                 <li>
-                    <h4 class="pf-item-title">学号</h4>
+                    <h4 class="pf-item-title">编号</h4>
 
-                    <p class="pf-item-value">131250118</p>
-                    <input type="text" value="131250118" class="pf-item-editable">
+                    <p class="pf-item-value"><s:property value="teacherEntity.tid" /></p>
+                    <input type="text" value="<s:property value="teacherEntity.tid" />" class="pf-item-editable" disabled="disabled">
                 </li>
-                <li>
+                <li class="name">
                     <h4 class="pf-item-title">姓名</h4>
 
-                    <p class="pf-item-value">罗会祥</p>
-                    <input type="text" value="罗会祥" class="pf-item-editable">
+                    <p class="pf-item-value"><s:property value="teacherEntity.tname" /></p>
+                    <input type="text" value="<s:property value="teacherEntity.tname" />" class="pf-item-editable">
                 </li>
-                <li>
+                <li class="department">
                     <h4 class="pf-item-title">院系</h4>
 
-                    <p class="pf-item-value">软件学院</p>
-                    <input type="text" value="软件学院" class="pf-item-editable">
+                    <p class="pf-item-value"><s:property value="teacherEntity.department" /></p>
+                    <input type="text" value="<s:property value="teacherEntity.department" />" class="pf-item-editable">
                 </li>
             </ul>
 
@@ -96,9 +98,25 @@
             $(".pf-item-editable").show();
 
         } else {
-            $(this).html("修改");
-            $(".pf-item-value").show();
-            $(".pf-item-editable").hide();
+            var $that = $(this);
+            $.ajax({
+                url: "admin2_updateTeacher",
+                dataType: 'json',
+                data: {
+                    tname: $(".name").find("input").val(),
+                    department: $(".department").find("input").val()
+                },
+                success: function(data) {
+                    $that.html("修改");
+                    $(".name").find(".pf-item-value").text($(".name").find("input").val());
+                    $(".department").find(".pf-item-value").text($(".department").find("input").val());
+                    $(".pf-item-value").show();
+                    $(".pf-item-editable").hide();
+                },
+                error: function() {
+                    alert("error!");
+                }
+            });
         }
     });
 </script>
