@@ -14,6 +14,16 @@
         <mapping class="cn.edu.nju.entity.StudentEntity"/>
         <mapping class="cn.edu.nju.entity.TeacherEntity"/>
         <mapping class="cn.edu.nju.entity.CompleteCourseScheduleEntity"/>
+        <mapping class="cn.edu.nju.entity.CourseSelectionEntity"/>
+        <mapping class="cn.edu.nju.entity.AssistantEntity"/>
+        <mapping class="cn.edu.nju.entity.CompleteSelectedCourseEntity"/>
+        <mapping class="cn.edu.nju.entity.HomeworkEntity"/>
+        <mapping class="cn.edu.nju.entity.StudentHomeworkEntity"/>
+        <mapping class="cn.edu.nju.entity.HomeworkFileEntity"/>
+        <mapping class="cn.edu.nju.entity.CompleteHomeworkEntity"/>
+        <mapping class="cn.edu.nju.entity.AssistCourseEntity"/>
+        <mapping class="cn.edu.nju.entity.ExampleFileEntity"/>
+        <mapping class="cn.edu.nju.entity.DesHomeworkEntity"/>
 
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->

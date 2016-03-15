@@ -41,5 +41,22 @@
               <property name="courseService" ref="courseService" />
               <property name="teacherService" ref="teacherService" />
        </bean>
-
+       <bean id="studentAction" class="cn.edu.nju.action.StudentAction">
+              <property name="studentService" ref="studentService"/>
+              <property name="courseScheduleService" ref="courseScheduleService"/>
+       </bean>
+       <bean id="teacherAction" class="cn.edu.nju.action.TeacherAction">
+              <property name="teacherService" ref="teacherService"/>
+              <property name="studentService" ref="studentService"/>
+       </bean>
+       <bean id="assistAction" class="cn.edu.nju.action.AssistAction">
+              <property name="studentService" ref="studentService"/>
+              <property name="teacherService" ref="teacherService"/>
+       </bean>
+       <bean id="uploadExample" class="cn.edu.nju.action.uploadExample">
+              <property name="teacherService" ref="teacherService"/>
+       </bean>
+       <bean id="uploadHomework" class="cn.edu.nju.action.uploadHomework">
+              <property name="studentService" ref="studentService"/>
+       </bean>
 </beans>

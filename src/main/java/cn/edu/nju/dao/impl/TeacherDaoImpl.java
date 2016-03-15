@@ -1,7 +1,8 @@
 package cn.edu.nju.dao.impl;
 
 import cn.edu.nju.dao.TeacherDao;
-import cn.edu.nju.entity.TeacherEntity;
+import cn.edu.nju.entity.*;
+import com.sun.javafx.collections.ListListenerHelper;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -114,5 +115,170 @@ public class TeacherDaoImpl implements TeacherDao {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         return session.createQuery("from TeacherEntity ").setFirstResult(firstRow).setMaxResults(length).list();
+    }
+
+    public List<CompleteCourseScheduleEntity> findCourse(String tid, String term) {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+
+        String hql = "from CompleteCourseScheduleEntity where tid = ? and term = ?";
+        List list = session.createQuery(hql).setString(0, tid).setString(1, term).list();
+        if(list.size() > 0) {
+            return list;
+        }
+        session.close();
+        return null;
+    }
+
+    public List<CompleteSelectedCourseEntity> findSelCourse(int csid) {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+
+        String hql = "from CompleteSelectedCourseEntity where csid = ?";
+        List list = session.createQuery(hql).setInteger(0, csid).list();
+        if(list.size() > 0) {
+            return list;
+        }
+        session.close();
+        return null;
+    }
+
+    public List<HomeworkEntity> findHomework(int csid) {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+
+        String hql = "from HomeworkEntity where csid = ?";
+        List list = session.createQuery(hql).setInteger(0, csid).list();
+        if(list.size() > 0) {
+            return list;
+        }
+        session.close();
+        return null;
+    }
+
+    public HomeworkEntity findHomeworkById(int hid) {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+
+        String hql = "from HomeworkEntity where hid = ?";
+        List list = session.createQuery(hql).setInteger(0, hid).list();
+        if(list.size() > 0) {
+            return (HomeworkEntity) list.get(0);
+        }
+        session.close();
+        return null;
+    }
+
+    public List<CompleteHomeworkEntity> findStuHomework(int csid, int hid) {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+
+        String hql = "from CompleteHomeworkEntity where csid = ? and hid = ?";
+        List list = session.createQuery(hql).setInteger(0, csid).setInteger(1, hid).list();
+        if(list.size() > 0) {
+            return list;
+        }
+        session.close();
+        return null;
+    }
+
+    public HomeworkEntity publishHomework(HomeworkEntity homeworkEntity) {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        try {
+            session.saveOrUpdate(homeworkEntity);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+
+        session = sessionFactory.openSession();
+        String hql = "from HomeworkEntity where csid = ? and deadline = ? and description = ?";
+        List list = session.createQuery(hql).setInteger(0, homeworkEntity.getCsid()).setString(1, homeworkEntity.getDeadline())
+                .setString(2, homeworkEntity.getDescription()).list();
+        if (list.size()>0){
+            return (HomeworkEntity)list.get(0);
+        }
+        session.close();
+        return null;
+    }
+
+    public ExampleFileEntity uploadExample(ExampleFileEntity exampleFileEntity) {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        try {
+            session.saveOrUpdate(exampleFileEntity);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+
+        session = sessionFactory.openSession();
+        String hql = "from ExampleFileEntity where efname = ?";
+        List list = session.createQuery(hql).setString(0, exampleFileEntity.getEfname()).list();
+        if (list.size()>0){
+            return (ExampleFileEntity) list.get(list.size()-1);
+        }
+        session.close();
+        return null;
+    }
+
+    public StudentHomeworkEntity pulishStuHomework(StudentHomeworkEntity studentHomeworkEntity) {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        try {
+            session.saveOrUpdate(studentHomeworkEntity);
+            session.getTransaction().commit();
+            return studentHomeworkEntity;
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+            return null;
+        } finally {
+            session.close();
+        }
+    }
+
+    public boolean arrangeAssistant(AssistantEntity assistantEntity) {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        try {
+            session.saveOrUpdate(assistantEntity);
+            session.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+            return false;
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<AssistCourseEntity> findAss(int csid) {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+
+        String hql = "from AssistCourseEntity where csid = ?";
+        List list = session.createQuery(hql).setInteger(0, csid).list();
+        if(list.size() > 0) {
+            return list;
+        }
+        session.close();
+        return null;
     }
 }

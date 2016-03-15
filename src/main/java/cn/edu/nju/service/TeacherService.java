@@ -1,8 +1,7 @@
 package cn.edu.nju.service;
 
-import cn.edu.nju.entity.TeacherEntity;
+import cn.edu.nju.entity.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,4 +16,16 @@ public interface TeacherService {
     public TeacherEntity findById(String uid);
     public List<TeacherEntity> getData(int page);
     public int getTotalPage();
+    //homework
+    public List<CompleteCourseScheduleEntity> findCourse(String tid, String term);
+    public List<CompleteSelectedCourseEntity> findSelCourse(int csid);
+    public List<HomeworkEntity> findHomework(int csid);
+    public HomeworkEntity findHomeworkById(int hid);
+    public List<CompleteHomeworkEntity> findStuHomework(int csid, int hid);
+    public HomeworkEntity publishHomework(HomeworkEntity homeworkEntity);
+    public ExampleFileEntity uploadExample(ExampleFileEntity exampleFileEntity);
+    public StudentHomeworkEntity publishStuHomework(StudentHomeworkEntity studentHomeworkEntity);
+    //assistant
+    public boolean arrangeAssistant(AssistantEntity assistantEntity);
+    public List<AssistCourseEntity> findAss(int csid);
 }

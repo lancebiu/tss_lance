@@ -6,7 +6,7 @@ import javax.persistence.*;
  * Created by lance on 2/15/16.
  */
 @Entity
-@Table(name = "complete_course_schedule", schema = "", catalog = "tss")
+@Table(name = "complete_course_schedule", schema = "tss", catalog = "")
 public class CompleteCourseScheduleEntity {
     private int csid;
     private String cid;
@@ -16,6 +16,7 @@ public class CompleteCourseScheduleEntity {
     private int credit;
     private String tname;
 
+    @Basic
     @Id
     @Column(name = "csid", nullable = false, insertable = true, updatable = true)
     public int getCsid() {

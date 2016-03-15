@@ -1,7 +1,7 @@
 package cn.edu.nju.service.impl;
 
 import cn.edu.nju.dao.TeacherDao;
-import cn.edu.nju.entity.TeacherEntity;
+import cn.edu.nju.entity.*;
 import cn.edu.nju.service.TeacherService;
 
 import java.util.ArrayList;
@@ -65,6 +65,71 @@ public class TeacherServiceImpl implements TeacherService {
         if (list.size() == 0)
             return 1;
         return (list.size()-1) / pageCols + 1;
+    }
+
+    public List<CompleteCourseScheduleEntity> findCourse(String tid, String term) {
+        List courses = dao.findCourse(tid, term);
+        List<CompleteCourseScheduleEntity> list = new ArrayList<CompleteCourseScheduleEntity>();
+        for(Object course : courses){
+            list.add((CompleteCourseScheduleEntity)course);
+        }
+        return list;
+    }
+
+    public List<CompleteSelectedCourseEntity> findSelCourse(int csid) {
+        List courses = dao.findSelCourse(csid);
+        List<CompleteSelectedCourseEntity> list = new ArrayList<CompleteSelectedCourseEntity>();
+        for(Object course : courses){
+            list.add((CompleteSelectedCourseEntity) course);
+        }
+        return list;
+    }
+
+    public List<HomeworkEntity> findHomework(int csid) {
+        List homeworks = dao.findHomework(csid);
+        List<HomeworkEntity> list = new ArrayList<HomeworkEntity>();
+        for(Object homework : homeworks){
+            list.add((HomeworkEntity)homework);
+        }
+        return list;
+    }
+
+    public HomeworkEntity findHomeworkById(int hid) {
+        return dao.findHomeworkById(hid);
+    }
+
+    public List<CompleteHomeworkEntity> findStuHomework(int csid, int hid) {
+        List homeworks = dao.findStuHomework(csid, hid);
+        List<CompleteHomeworkEntity> list = new ArrayList<CompleteHomeworkEntity>();
+        for(Object homework : homeworks){
+            list.add((CompleteHomeworkEntity) homework);
+        }
+        return list;
+    }
+
+    public HomeworkEntity publishHomework(HomeworkEntity homeworkEntity) {
+        return dao.publishHomework(homeworkEntity);
+    }
+
+    public ExampleFileEntity uploadExample(ExampleFileEntity exampleFileEntity) {
+        return dao.uploadExample(exampleFileEntity);
+    }
+
+    public StudentHomeworkEntity publishStuHomework(StudentHomeworkEntity studentHomeworkEntity) {
+        return dao.pulishStuHomework(studentHomeworkEntity);
+    }
+
+    public boolean arrangeAssistant(AssistantEntity assistantEntity) {
+        return dao.arrangeAssistant(assistantEntity);
+    }
+
+    public List<AssistCourseEntity> findAss(int csid) {
+        List ass = dao.findAss(csid);
+        List<AssistCourseEntity> list = new ArrayList<AssistCourseEntity>();
+        for(Object as : ass){
+            list.add((AssistCourseEntity) as);
+        }
+        return list;
     }
 
 }

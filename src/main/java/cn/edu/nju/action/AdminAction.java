@@ -22,12 +22,14 @@ public class AdminAction extends BaseAction {
 
     private List<StudentEntity> students;
     private List<TeacherEntity> teachers;
+    private List<AssistantEntity> assistants;
     private List<CourseEntity> courses;
     private List<CourseScheduleEntity> schedules;
     private List<CompleteCourseScheduleEntity> completeSchedules;
 
     private StudentEntity studentEntity;
     private TeacherEntity teacherEntity;
+    private AssistantEntity assistantEntity;
 
     private String term;
     private String uid;
@@ -35,6 +37,7 @@ public class AdminAction extends BaseAction {
     private String uname;
     private String tname;
     private String department;
+    private String password;
 
     private int page;
     private boolean pageCommit = false;
@@ -197,6 +200,22 @@ public class AdminAction extends BaseAction {
         this.department = department;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public AssistantEntity getAssistantEntity() {
+        return assistantEntity;
+    }
+
+    public void setAssistantEntity(AssistantEntity assistantEntity) {
+        this.assistantEntity = assistantEntity;
+    }
+
     public String students() {
         if (!pageCommit)
             page = 1;
@@ -218,6 +237,14 @@ public class AdminAction extends BaseAction {
     public String courses() {
         courses = courseService.findAll();
         return "courses";
+    }
+
+    public List<AssistantEntity> getAssistants() {
+        return assistants;
+    }
+
+    public void setAssistants(List<AssistantEntity> assistants) {
+        this.assistants = assistants;
     }
 
     public String schedules() {
@@ -265,5 +292,47 @@ public class AdminAction extends BaseAction {
         teacherEntity.setDepartment(department);
         teacherService.update(teacherEntity);
         return "updateTeacher";
+    }
+
+    public String checkUser(){
+        students = studentService.findAll();
+        teachers = teacherService.findAll();
+        assistants = studentService.findAllAs();
+
+        if(uid.equals("admin") && password.equals("admin")){
+            return "administrator";
+        }
+
+        for(AssistantEntity assistant : assistants){
+            if(uid.equals(assistant.getUid())){
+                if(password.equals(studentService.findById(uid).getPassword())){
+                    return "assistant";
+                }else {
+                    return "password";
+                }
+            }
+        }
+
+        for(StudentEntity studentEntity : students){
+            if(uid.equals(studentEntity.getUid())){
+                if(password.equals(studentService.findById(uid).getPassword())){
+                    return "student";
+                }else {
+                    return "password";
+                }
+            }
+        }
+
+        for(TeacherEntity teacherEntity : teachers){
+            if(uid.equals(teacherEntity.getTid())){
+                if(password.equals(teacherService.findById(uid).getPassword())){
+                    return "teacher";
+                }else {
+                    return "password";
+                }
+            }
+        }
+
+        return "user";
     }
 }

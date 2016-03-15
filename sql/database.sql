@@ -86,3 +86,84 @@ select cs.*, c.cname, c.credit, t.tname from course_schedule cs, course c, teach
   where cs.cid = c.cid
   and cs.tid = t.tid
   order by cs.cid;
+
+CREATE TABLE assistant (
+  aid INT NOT NULL AUTO_INCREMENT,
+  uid VARCHAR(10) NOT NULL,
+  csid INT NOT NULL,
+  PRIMARY KEY (aid));
+
+CREATE TABLE course_selection (
+  id INT NOT NULL AUTO_INCREMENT,
+  csid INT NOT NULL,
+  uid VARCHAR(10) NOT NULL,
+  PRIMARY KEY (id));
+
+CREATE VIEW complete_selected_course AS
+select cs.*, c.cname, c.credit, t.tname, cse.uid, s.uname, cse.id from course_schedule cs, course c, teacher t, course_selection cse, student s
+  where cs.cid = c.cid
+  and cs.tid = t.tid
+  and cs.csid = cse.csid
+  and cse.uid = s.uid
+  order by cse.id;
+
+CREATE TABLE homework (
+  hid INT NOT NULL AUTO_INCREMENT,
+  csid INT NOT NULL,
+  deadline VARCHAR(20) NOT NULL,
+  description VARCHAR(45) NULL,
+  efid INT NULL DEFAULT NULL,
+  PRIMARY KEY (hid));
+
+CREATE TABLE student_homework (
+  shid INT NOT NULL AUTO_INCREMENT,
+  hid INT NOT NULL,
+  uid VARCHAR(10) NOT NULL,
+  fid INT NULL DEFAULT NULL,
+  score VARCHAR(10) NULL DEFAULT NULL,
+  status INT NULL DEFAULT NULL,
+  PRIMARY KEY (`shid`));
+
+//status 0 代表助教未审核, 1代表助教已审核, 2代表教师同意, 3代表教师拒绝
+
+CREATE TABLE homework_file (
+  fid INT NOT NULL AUTO_INCREMENT,
+  fname VARCHAR(20) NOT NULL,
+  PRIMARY KEY (fid));
+
+CREATE TABLE example_file (
+  efid INT NOT NULL AUTO_INCREMENT,
+  efname VARCHAR(20) NOT NULL,
+  PRIMARY KEY (efid));
+
+CREATE VIEW complete_homework AS
+select sh.shid, h.*, ef.efname, sh.uid, s.uname, sh.score, sh.status, hf.*, cs.cid, cs.tid, cs.term from homework h, student_homework sh, homework_file hf, course_schedule cs, example_file ef, student s
+  where h.hid = sh.hid
+  and sh.fid = hf.fid
+  and h.csid = cs.csid
+  and sh.uid = s.uid
+  and h.efid = ef.efid
+  order by sh.shid;
+
+CREATE VIEW assist_course AS
+SELECT a.aid, a.uid, cs.*, s.uname, c.cname, c.credit, t.tname from assistant a, student s, course_schedule cs, course c, teacher t
+  where a.uid = s.uid
+  and a.csid = cs.csid
+  and cs.cid = c.cid
+  and cs.tid = t.tid
+  order by a.aid;
+
+INSERT INTO homework VALUES
+(1, 8, "2016-3-31 23:59:59", "请提交作业", 1),
+(2, 8, "2016-4-1 23:59:59", "请提交作业", 2),
+(3, 8, "2016-5-1 23:59:59", "不交拉倒", 3),
+(4, 9, "2016-2-29 23:59:59", "四年一次", 1),
+(5, 10, "2016-3-31 23:59:59", "哈哈", 2),
+(6, 12, "2016-6-1 23:59:59", "过六一啦", 2),
+(7, 13, "2016-7-6 23:59:59", "过生日呀", 1);
+
+CREATE VIEW des_homework AS
+SELECT h.*, ef.efname, sh.shid, sh.uid, sh.fid, sh.score, sh.status from homework h, student_homework sh, example_file ef
+  where h.hid = sh.hid
+  and h.efid = ef.efid
+  order by sh.shid;

@@ -15,6 +15,58 @@
             <result name="schedules">/adminSchedule.jsp</result>
             <result name="studentDetail">/adminStudentDetail.jsp</result>
             <result name="teacherDetail">/adminTeacherDetail.jsp</result>
+            <result name="student" type="redirectAction">
+                <param name="actionName">student_allCourse</param>
+                <param name="uid">${uid}</param>
+            </result>
+            <result name="teacher" type="redirectAction">
+                <param name="actionName">teacher_findMyCourse</param>
+                <param name="tid">${uid}</param>
+            </result>
+            <result name="assistant" type="redirectAction">
+                <param name="actionName">assist_getAsCourse</param>
+                <param name="uid">${uid}</param>
+            </result>
+            <result name="administrator">/adminStudent.jsp</result>
+            <result name="user">/login.jsp</result>
+            <result name="password">/login.jsp</result>
+        </action>
+
+        <action name="student_*" class="studentAction" method="{1}">
+            <result name="allCourse">/StuCourseList.jsp</result>
+            <result name="myCourse">/StuMyCourse.jsp</result>
+            <result name="findHomework">/StuHomework.jsp</result>
+        </action>
+
+        <action name="teacher_*" class="teacherAction" method="{1}">
+            <result name="findMyCourse">/TeaMyCourse.jsp</result>
+            <result name="addAss">/TeaAddAss.jsp</result>
+            <result name="findMyHomework">/TeaHomework.jsp</result>
+            <result name="findMyStuHomework">/TeaHomeworkList.jsp</result>
+            <result name="acceptHomework">/TeaHomeworkList.jsp</result>
+            <result name="rejectHomework">/TeaHomeworkList.jsp</result>
+        </action>
+
+        <action name="assist_*" class="assistAction" method="{1}">
+            <result name="getAsCourse">/AssMyCourse.jsp</result>
+            <result name="findMyHomework">/AssHomework.jsp</result>
+            <result name="findMyStuHomework">/AssHomeworkList.jsp</result>
+        </action>
+        
+        <action name="upload" class="uploadExample">
+            <result name="success">/TeaHomework.jsp</result>
+            <result name="error">/TeaHomework.jsp</result>
+        </action>
+
+        <action name="upload2" class="uploadHomework">
+            <result name="success" type="redirectAction">
+                <param name="actionName">student_myCourse</param>
+                <param name="term">2016-1</param>
+            </result>
+            <result name="error" type="redirectAction">
+                <param name="actionName">student_myCourse</param>
+                <param name="term">2016-1</param>
+            </result>
         </action>
 
     </package>
@@ -25,6 +77,18 @@
         </action>
 
         <action name="admin2_*" class="adminAction" method="{1}">
+            <result type="json" name="{1}"/>
+        </action>
+
+        <action name="student2_*" class="studentAction" method="{1}">
+            <result type="json" name="{1}"/>
+        </action>
+
+        <action name="teacher2_*" class="teacherAction" method="{1}">
+            <result type="json" name="{1}"/>
+        </action>
+
+        <action name="assist2_*" class="assistAction" method="{1}">
             <result type="json" name="{1}"/>
         </action>
     </package>
